@@ -38,22 +38,22 @@ class Save_DataFrame(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         try:
             if X.shape[0] == 1:
-                if X.shape[1] == 17:
-                    self.save_path = "artifacts/02_DataFrames/Prediction/df_pred_pp.pkl"
+                if X.shape[1] > 78:  # Double check this
+                    self.save_path = "artifacts/02_DataFrames/Predict/df_pred_pp.pkl"
                 else:
-                    self.save_path = "artifacts/02_DataFrames/Prediction/df_pred_fs.pkl"
+                    self.save_path = "artifacts/02_DataFrames/Predict/df_pred_fs.pkl"
 
             elif X.shape[0] > 300:
-                if X.shape[1] == 17:
-                    self.save_path = "artifacts/02_DataFrames/Training/df_train_pp.pkl"
+                if X.shape[1] > 78:
+                    self.save_path = "artifacts/02_DataFrames/Train/df_train_pp.pkl"
                 else:
-                    self.save_path = "artifacts/02_DataFrames/Training/df_train_fs.pkl"
+                    self.save_path = "artifacts/02_DataFrames/Train/df_train_fs.pkl"
 
             elif X.shape[0] < 300:
-                if X.shape[1] == 17:
-                    self.save_path = "artifacts/02_DataFrames/Training/df_test_pp.pkl"
+                if X.shape[1] > 78:
+                    self.save_path = "artifacts/02_DataFrames/Train/df_test_pp.pkl"
                 else:
-                    self.save_path = "artifacts/02_DataFrames/Training/df_test_fs.pkl"
+                    self.save_path = "artifacts/02_DataFrames/Train/df_test_fs.pkl"
 
             if not isinstance(X, pd.DataFrame):
                 X = pd.DataFrame(X, columns=self.column_names)
@@ -367,7 +367,7 @@ class PipelineConstructor:
                                                 FunctionTransformer(
                                                     func=self.CappingOutlier,
                                                     kw_args={
-                                                        "multiplier": 3,
+                                                        "threshold": 3,
                                                         "method": "z_score",
                                                     },
                                                 ),
@@ -425,7 +425,7 @@ class PipelineConstructor:
                             func=self.create_new_feats, kw_args={"drop": self.cols_drop}
                         ),
                     ),
-                    ("Save_DF", Save_DataFrame()),
+                    ("Save_DF_prpc", Save_DataFrame()),
                     (
                         "Feat_Slcn",
                         RFECV(
@@ -436,7 +436,7 @@ class PipelineConstructor:
                             n_jobs=-1,
                         ),
                     ),
-                    ("Save_DF", Save_DataFrame()),
+                    ("Save_DF_ftsl", Save_DataFrame()),
                 ]
             ).set_output(transform="pandas")
 

@@ -50,7 +50,7 @@ class ModelTrainer:
             df_test = pd.read_csv(self.test_path)
             logging.info("Successfully read test dataset")
 
-            cols_target = "Survived"
+            cols_target = "SalePrice"
 
             x_train = df_train.drop(columns=cols_target)
             y_train = df_train[cols_target]
@@ -58,9 +58,23 @@ class ModelTrainer:
             y_test = df_test[cols_target]
             logging.info("Successfully created x & y - train & test sets")
 
-            drop_cols = ["Name", "LastName", "Title"]
+            # Define some column names
+            chk_year = ["Yr", "Year"]
+            cols_year = [
+                col for col in df_train.columns if any(item in col for item in chk_year)
+            ]
+            drop_cols = [col for col in cols_year if col != "GarageYrBlt"]
+            cols_catg = [col for col in x_train.columns if x_train[col].dtypes == "O"]
+            cols_numr = [col for col in x_train.columns if x_train[col].dtypes != "O"]
+            cols_numr = [x for x in cols_numr if x not in drop_cols]
+            cols_numr_disc = [
+                col for col in cols_numr if len(x_train[col].unique()) < 25
+            ]
+            cols_numr_cont = [col for col in cols_numr if col not in cols_numr_disc]
 
-            pc = PipelineConstructor(cols_drop=drop_cols)
+            pc = PipelineConstructor(
+                cols_catg=cols_catg, cols_numr_cont=cols_numr_cont, cols_drop=drop_cols
+            )
             ppln_prpc = pc.create_pipeline()
             logging.info("Successfully acquired the training pipeline object")
 
@@ -81,7 +95,7 @@ class ModelTrainer:
                             models=self.models_dict,
                             param_grids=self.params_dict,
                             cv=3,
-                            Method="GridSearchCV",
+                            method="GridSearchCV",
                         ),
                     ),
                 ]
@@ -93,7 +107,9 @@ class ModelTrainer:
             )
 
             df_pred, models = ppln_train.predict(x_test)
-            df_scores = model_scores(y_true=y_test, y_pred=df_pred)
+            df_scores = model_scores(
+                y_true=y_test, y_pred=df_pred, model_type="Regression"
+            )
             logging.info(
                 f"All {len(self.models_dict.keys())} models successfully scored on test set"
             )
