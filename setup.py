@@ -30,12 +30,12 @@ setup(
     author_email=Author_email,
     description="ML app to predict house prices in Boston",
     long_description=long_desc,
-    long_description_content_type="text/markdown",  # Specify the content type
+    long_description_content_type="text/markdown",
     url=f"https://github.com/{Author_name}/{Repo_name}",
     package_dir={"": "src"},
-    packages=find_packages(where="src"),  # Specify where to find packages
-    install_requires=get_packages(),  # Use install_requires
-    python_requires=">=3.7",  # Add python version requirement
+    packages=find_packages(where="src"),
+    install_requires=get_packages(),
+    python_requires=">=3.7",
 )
 
 # Run python setup.py install
