@@ -4,7 +4,7 @@ import random
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import load_object
-from src.constants.random_name import last_name_list, title_list
+from src.constants.random_data import data_dict
 
 
 class PredictionPipeline:
@@ -34,42 +34,74 @@ class PredictionPipeline:
 class CustomData:
     def __init__(
         self,
-        Pclass: int,
-        Sex: str,
-        Age: int,
-        SibSp: int,
-        Parch: int,
-        Fare: float,
-        Cabin: str,
-        Embarked: str,
+        MSZoning: str = None,
+        LotArea: int = None,
+        LotShape: str = None,
+        LandContour: str = None,
+        Utilities: str = None,
+        LotConfig: str = None,
+        OverallQual: str = None,
+        MasVnrType: str = None,
+        TotalBsmtSF: str = None,
+        LowQualFinSF: str = None,
+        BsmtFullBath: str = None,
+        FullBath: int = None,
+        KitchenAbvGr: int = None,
+        GarageCars: int = None,
+        GarageArea: int = None,
+        PoolArea: int = None,
+        PoolQC: str = None,
+        SaleType: str = None,
     ):
-        self.Pclass = int(Pclass)
-        self.Sex = str(Sex)
-        self.Age = int(Age)
-        self.SibSp = int(SibSp)
-        self.Parch = int(Parch)
-        self.Fare = float(Fare)
-        self.Cabin = str(Cabin)
-        self.Embarked = str(Embarked)
+        self.MSZoning = str(MSZoning)
+        self.LotArea = int(LotArea)
+        self.LotShape = str(LotShape)
+        self.LandContour = str(LandContour)
+        self.Utilities = str(Utilities)
+        self.LotConfig = str(LotConfig)
+        self.OverallQual = str(OverallQual)
+        self.MasVnrType = str(MasVnrType)
+        self.TotalBsmtSF = str(TotalBsmtSF)
+        self.LowQualFinSF = str(LowQualFinSF)
+        self.BsmtFullBath = str(BsmtFullBath)
+        self.FullBath = int(FullBath)
+        self.KitchenAbvGr = int(KitchenAbvGr)
+        self.GarageCars = int(GarageCars)
+        self.GarageArea = int(GarageArea)
+        self.PoolArea = int(PoolArea)
+        self.PoolQC = str(PoolQC)
+        self.SaleType = str(SaleType)
 
     def get_DataFrame(self):
         try:
             logging.info("Converting user inputs to DataFrame")
-            # Adding a randomly generated "last name, title. random_name"
+            # Getting select data from customer
             cust_data = {
-                "Pclass": [self.Pclass],
-                "Name": [
-                    f"{random.choice(last_name_list)}, {random.choice(title_list)}. Random Placeholder Name"
-                ],
-                "Sex": [self.Sex],
-                "Age": [self.Age],
-                "SibSp": [self.SibSp],
-                "Parch": [self.Parch],
-                "Fare": [self.Fare],
-                "Cabin": [self.Cabin],
-                "Embarked": [self.Embarked],
+                "MSZoning": [self.MSZoning],
+                "LotArea": [self.LotArea],
+                "LotShape": [self.LotShape],
+                "LandContour": [self.LandContour],
+                "Utilities": [self.Utilities],
+                "LotConfig": [self.LotConfig],
+                "OverallQual": [self.OverallQual],
+                "MasVnrType": [self.MasVnrType],
+                "TotalBsmtSF": [self.TotalBsmtSF],
+                "LowQualFinSF": [self.LowQualFinSF],
+                "BsmtFullBath": [self.BsmtFullBath],
+                "FullBath": [self.FullBath],
+                "KitchenAbvGr": [self.KitchenAbvGr],
+                "GarageCars": [self.GarageCars],
+                "GarageArea": [self.GarageArea],
+                "PoolArea": [self.PoolArea],
+                "PoolQC": [self.PoolQC],
+                "SaleType": [self.SaleType],
             }
-            df_cust = pd.DataFrame(cust_data)
+            # Getting remaining data chosen at random
+            rand_data = {key: [random.choice(val)] for key, val in data_dict.items()}
+            # Full data
+            full_data_dict = cust_data | rand_data
+
+            df_cust = pd.DataFrame(full_data_dict)
             logging.info("Successfully converted user inputs to DataFrame")
             return df_cust
 

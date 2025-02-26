@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P-3_Beginner_Boston-Advanced-House-Price-Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>P-3_Beginner_Boston-Advanced-House-Price-Prediction</h2>
+        <p>This dataset actually has 80 features. User can input the ones with the highest impact on the SalePrice and the rest of the feature values will be chosen at random.</p>
+
+        <form action="/predictdata" method="POST">
+
+            <!-- MSZoning Dropdown -->
+            <div class="form-group">
+                <label for="MSZoning">MSZoning:</label>
+                <select id="MSZoning" name="MSZoning" required class='form-control'>
+                    <option value="RL">RL</option>
+                    <option value="RM">RM</option>
+                    <option value="C (all)">C (all)</option>
+                    <option value="FV">FV</option>
+                    <option value="RH">RH</option>
+                </select>
+            </div>
+
+            <!-- LotShape Dropdown -->
+            <div class="form-group">
+                <label for="LotShape">LotShape:</label>
+                <select id="LotShape" name="LotShape" required class='form-control'>
+                    <option value="Reg">Reg</option>
+                    <option value="IR1">IR1</option>
+                    <option value="IR2">IR2</option>
+                    <option value="IR3">IR3</option>
+                </select>
+            </div>
+
+            <!-- LandContour Dropdown -->
+            <div class="form-group">
+                <label for="LandContour">LandContour:</label>
+                <select id="LandContour" name="LandContour" required class='form-control'>
+                    <option value="Lvl">Lvl</option>
+                    <option value="Bnk">Bnk</option>
+                    <option value="Low">Low</option>
+                    <option value="HLS">HLS</option>
+                </select>
+            </div>
+
+            <!-- Utilities Dropdown -->
+            <div class="form-group">
+                <label for="Utilities">Utilities:</label>
+                <select id="Utilities" name="Utilities" required class='form-control'>
+                    <option value="AllPub">AllPub</option>
+                    <option value="NoSeWa">NoSeWa</option>
+                </select>
+            </div>
+
+            <!-- LotConfig Dropdown -->
+            <div class="form-group">
+                <label for="LotConfig">LotConfig:</label>
+                <select id="LotConfig" name="LotConfig" required class='form-control'>
+                    <option value="Inside">Inside</option>
+                    <option value="FR2">FR2</option>
+                    <option value="Corner">Corner</option>
+                    <option value="CulDSac">CulDSac</option>
+                    <option value="FR3">FR3</option>
+                </select>
+            </div>
+
+            <!-- MasVnrType Dropdown -->
+            <div class="form-group">
+                <label for="MasVnrType">MasVnrType:</label>
+                <select id="MasVnrType" name="MasVnrType" required class='form-control'>
+                    <option value="BrkFace">BrkFace</option>
+                    <option value="Stone">Stone</option>
+                    <option value="BrkCmn">BrkCmn</option>
+                </select>
+            </div>
+
+            <!-- PoolQC Dropdown -->
+            <div class="form-group">
+                <label for="PoolQC">PoolQC:</label>
+                <select id="PoolQC" name="PoolQC" required class='form-control'>
+                    <option value="Ex">Ex</option>
+                    <option value="Fa">Fa</option>
+                    <option value="Gd">Gd</option>
+                </select>
+            </div>
+
+            <!-- SaleType Dropdown -->
+            <div class="form-group">
+                <label for="SaleType">SaleType:</label>
+                <select id="SaleType" name="SaleType" required class='form-control'>
+                    <option value="WD">WD</option>
+                    <option value="New">New</option>
+                    <option value="COD">COD</option>
+                    <option value="ConLD">ConLD</option>
+                    <option value="ConLI">ConLI</option>
+                    <option value="CWD">CWD</option>
+                    <option value="ConLw">ConLw</option>
+                    <option value="Con">Con</option>
+                    <option value="Oth">Oth</option>
+                </select>
+            </div>
+
+            <!-- LotArea Slider -->
+            <div class="form-group">
+                <label for="LotArea">LotArea:</label>
+                <input type="range" id="LotArea" name="LotArea" min=1000 max=10000 step=1 value=5000 class="form-control-range" oninput="updateValue('LotArea', this.value)">
+                <span id="LotAreaValue">5000</span>
+            </div>
+
+            <!-- OverallQual Slider -->
+            <div class="form-group">
+                <label for="OverallQual">OverallQual:</label>
+                <input type="range" id="OverallQual" name="OverallQual" min=1 max=10 step=1 value=5 class="form-control-range" oninput="updateValue('OverallQual', this.value)">
+                <span id="OverallQualValue">5</span>
+            </div>
+
+            <!-- TotalBsmtSF Slider -->
+            <div class="form-group">
+                <label for="TotalBsmtSF">TotalBsmtSF:</label>
+                <input type="range" id="TotalBsmtSF" name="TotalBsmtSF" min=0 max=6000 step=1 value=3000 class="form-control-range" oninput="updateValue('TotalBsmtSF', this.value)">
+                <span id="TotalBsmtSFValue">3000</span>
+            </div>
+
+            <!-- LowQualFinSF Slider -->
+            <div class="form-group">
+                <label for="LowQualFinSF">LowQualFinSF:</label>
+                <input type="range" id="LowQualFinSF" name="LowQualFinSF" min=0 max=600 step=1 value=300 class="form-control-range" oninput="updateValue('LowQualFinSF', this.value)">
+                <span id="LowQualFinSFValue">300</span>
+            </div>
+
+            <!-- BsmtFullBath Slider -->
+            <div class="form-group">
+                <label for="BsmtFullBath">BsmtFullBath:</label>
+                <input type="range" id="BsmtFullBath" name="BsmtFullBath" min=0 max=3 step=1 value=1 class="form-control-range" oninput="updateValue('BsmtFullBath', this.value)">
+                <span id="BsmtFullBathValue">1</span>
+            </div>
+
+            <!-- FullBath Slider -->
+            <div class="form-group">
+                <label for="FullBath">FullBath:</label>
+                <input type="range" id="FullBath" name="FullBath" min=0 max=3 step=1 value=1 class="form-control-range" oninput="updateValue('FullBath', this.value)">
+                <span id="FullBathValue">1</span>
+            </div>
+
+            <!-- KitchenAbvGr Slider -->
+            <div class="form-group">
+                <label for="KitchenAbvGr">KitchenAbvGr:</label>
+                <input type="range" id="KitchenAbvGr" name="KitchenAbvGr" min=0 max=3 step=1 value=1 class="form-control-range" oninput="updateValue('KitchenAbvGr', this.value)">
+                <span id="KitchenAbvGrValue">1</span>
+            </div>
+
+            <!-- GarageCars Slider -->
+            <div class="form-group">
+                <label for="GarageCars">GarageCars:</label>
+                <input type="range" id="GarageCars" name="GarageCars" min=0 max=4 step=1 value=2 class="form-control-range" oninput="updateValue('GarageCars', this.value)">
+                <span id="GarageCarsValue">2</span>
+            </div>
+
+            <!-- GarageArea Slider -->
+            <div class="form-group">
+                <label for="GarageArea">GarageArea:</label>
+                <input type="range" id="GarageArea" name="GarageArea" min=0 max=1500 step=1 value=750 class="form-control-range" oninput="updateValue('GarageArea', this.value)">
+                <span id="GarageAreaValue">750</span>
+            </div>
+
+            <!-- PoolArea Slider -->
+            <div class="form-group">
+                <label for="PoolArea">PoolArea:</label>
+                <input type="range" id="PoolArea" name="PoolArea" min=0 max=800 step=1 value=400 class="form-control-range" oninput="updateValue('PoolArea', this.value)">
+                <span id="PoolAreaValue">400</span>
+            </div>
+
+            <!-- Display prediction result -->
+            {% if results %}
+              <h3>Predicted House Price: $ {{ results }}</h3>
+            {% endif %}
+
+            <!-- Randomize Button -->
+            <button type="button" class="btn btn-secondary" onclick="randomizeValues()">Randomize Values</button>
+
+            <!-- Submit Button -->
+            <button type='submit' class='btn btn-primary'>Predict</button>
+
+        </form>
+
+        <!-- JavaScript to update slider value display -->
+        <script>
+          function updateValue(sliderId, value) {
+              document.getElementById(sliderId + 'Value').innerText = value;
+          }
+
+          function randomizeValues() {
+              // Randomize dropdowns
+              document.getElementById('MSZoning').value = getRandomOption('MSZoning');
+              document.getElementById('LotShape').value = getRandomOption('LotShape');
+              document.getElementById('LandContour').value = getRandomOption('LandContour');
+              document.getElementById('Utilities').value = getRandomOption('Utilities');
+              document.getElementById('LotConfig').value = getRandomOption('LotConfig');
+              document.getElementById('MasVnrType').value = getRandomOption('MasVnrType');
+              document.getElementById('PoolQC').value = getRandomOption('PoolQC');
+              document.getElementById('SaleType').value = getRandomOption('SaleType');
+
+              // Randomize sliders
+              document.getElementById('LotArea').value = getRandomInt(1000, 10000);
+              document.getElementById('OverallQual').value = getRandomInt(1, 10);
+              document.getElementById('TotalBsmtSF').value = getRandomInt(0, 6000);
+              document.getElementById('LowQualFinSF').value = getRandomInt(0, 600);
+              document.getElementById('BsmtFullBath').value = getRandomInt(0, 3);
+              document.getElementById('FullBath').value = getRandomInt(0, 3);
+              document.getElementById('KitchenAbvGr').value = getRandomInt(0, 3);
+              document.getElementById('GarageCars').value = getRandomInt(0, 4);
+              document.getElementById('GarageArea').value = getRandomInt(0, 1500);
+              document.getElementById('PoolArea').value = getRandomInt(0, 800);
+
+              // Update slider values display
+              updateValue('LotArea', document.getElementById('LotArea').value);
+              updateValue('OverallQual', document.getElementById('OverallQual').value);
+              updateValue('TotalBsmtSF', document.getElementById('TotalBsmtSF').value);
+              updateValue('LowQualFinSF', document.getElementById('LowQualFinSF').value);
+              updateValue('BsmtFullBath', document.getElementById('BsmtFullBath').value);
+              updateValue('FullBath', document.getElementById('FullBath').value);
+              updateValue('KitchenAbvGr', document.getElementById('KitchenAbvGr').value);
+              updateValue('GarageCars', document.getElementById('GarageCars').value);
+              updateValue('GarageArea', document.getElementById('GarageArea').value);
+              updateValue('PoolArea', document.getElementById('PoolArea').value);
+          }
+
+          function getRandomOption(id) {
+              var select = document.getElementById(id);
+              var options = select.options;
+              return options[Math.floor(Math.random() * options.length)].value;
+          }
+
+          function getRandomInt(min, max) {
+              return Math.floor(Math.random() * (max - min + 1)) + min;
+          }
+        </script>
+
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

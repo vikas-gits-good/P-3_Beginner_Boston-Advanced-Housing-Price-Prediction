@@ -19,23 +19,32 @@ def predict_datapoint():
     else:
         logging.info("Getting user input from web form")
         data = CustomData(
-            Pclass=request.form.get("Pclass"),
-            Sex=request.form.get("Sex"),
-            Age=request.form.get("Age"),
-            SibSp=request.form.get("SibSp"),
-            Parch=request.form.get("Parch"),
-            Fare=request.form.get("Fare"),
-            Cabin=request.form.get("Cabin"),
-            Embarked=request.form.get("Embarked"),
+            MSZoning=request.form.get("MSZoning"),
+            LotArea=request.form.get("LotArea"),
+            LotShape=request.form.get("LotShape"),
+            LandContour=request.form.get("LandContour"),
+            Utilities=request.form.get("Utilities"),
+            LotConfig=request.form.get("LotConfig"),
+            OverallQual=request.form.get("OverallQual"),
+            MasVnrType=request.form.get("MasVnrType"),
+            TotalBsmtSF=request.form.get("TotalBsmtSF"),
+            LowQualFinSF=request.form.get("LowQualFinSF"),
+            BsmtFullBath=request.form.get("BsmtFullBath"),
+            FullBath=request.form.get("FullBath"),
+            KitchenAbvGr=request.form.get("KitchenAbvGr"),
+            GarageCars=request.form.get("GarageCars"),
+            GarageArea=request.form.get("GarageArea"),
+            PoolArea=request.form.get("PoolArea"),
+            PoolQC=request.form.get("PoolQC"),
+            SaleType=request.form.get("SaleType"),
         )
         x_pred = data.get_DataFrame()
 
         logging.info("Calculating prediction for user input")
         ppln_pred = PredictionPipeline()
         y_pred = ppln_pred.predict(features=x_pred)
-        surv = "Survived" if y_pred == 1 else "Died"
         logging.info("Returning prediction to user")
-        return render_template("home.html", results=surv)
+        return render_template("home.html", results=round(y_pred[0], 2))
 
 
 if __name__ == "__main__":
